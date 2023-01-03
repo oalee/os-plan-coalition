@@ -5,7 +5,7 @@ This is a open science ongoing project for creation of a coalition representativ
 ## Research Plan Proposal
 
 
-To see the latest version, please click [here](https://github.com/osjina/os-plan-coalition-iran/raw/main/research-plan-proposal.pdf).
+To see the latest version, please click [here](https://github.com/osairan/os-plan-coalition-iran/raw/main/research-plan-proposal.pdf).
 
 
 
