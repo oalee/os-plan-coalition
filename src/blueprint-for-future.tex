@@ -1,0 +1,379 @@
+\documentclass{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[sorting = none]{biblatex}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{hyperref}           % page numbers and '\ref's become clickable
+\usepackage{todonotes}
+\usepackage{float}          % for forcing images to stay where they should
+\usepackage{multirow}       % for using multirow in tables
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{longtable}
+\usepackage[edges]{forest}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{MnSymbol}
+\usepackage{tipa}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+
+\mdfdefinestyle{Frame}{
+    linecolor=black,
+    outerlinewidth=0.3pt,
+    roundcorner=2pt,
+    innertopmargin=\baselineskip,
+    innerbottommargin=\baselineskip,
+    leftmargin =1cm,
+    rightmargin =1cm,
+    backgroundcolor=white}
+    \mdfdefinestyle{Frame_NoMargin}{%
+    linecolor=black,
+    outerlinewidth=0.3pt,
+    roundcorner=2pt,
+    innertopmargin=\baselineskip,
+    innerbottommargin=\baselineskip,
+    backgroundcolor=white}
+    \mdfdefinestyle{InnerFrame_NoMargin}{%
+    linecolor=black,
+    outerlinewidth=0.1pt,
+    roundcorner=0.5pt,
+    % innertopmargin=\baselineskip,
+    % innerbottommargin=\baselineskip,
+    leftmargin =-0.1cm,
+    innerleftmargin = 0.05cm,
+    rightmargin =0cm,
+    backgroundcolor=white}  
+    \mdfdefinestyle{InnerFrameBig_NoMargin}{%
+    linecolor=black,
+    outerlinewidth=0.1pt,
+    roundcorner=0.5pt,
+    % innertopmargin=\baselineskip,
+    % innerbottommargin=\baselineskip,
+    leftmargin =-0.22cm,
+    innerleftmargin = 0.05cm,
+    rightmargin =-0.22cm,
+    backgroundcolor=white}
+      \mdfdefinestyle{Frame_NoInnerMargin}{%
+    linecolor=black,
+    outerlinewidth=0.3pt,
+    roundcorner=2pt,
+    innerleftmargin = 0.02cm,
+    innertopmargin=\baselineskip,
+    innerbottommargin=\baselineskip,
+    backgroundcolor=white}
+      \mdfdefinestyle{Frame_Blank}{%
+    linecolor=white,
+    outerlinewidth=0.0pt,
+    roundcorner=0pt,
+    innerleftmargin = 0.3cm,
+        innertopmargin=0cm,
+    innerbottommargin=0.2cm,
+    backgroundcolor=white}    
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Some commands       %
+%%%%%%%%%%%%%%%%%%%%%%%
+% Notes
+\newcommand{\note}[1]{\todo[inline]{#1}}
+\newcommand{\urgent}[1]{\todo[inline, color=red]{#1}}
+\newcommand{\revision}[1]{\todo[inline, color=green]{#1}}
+\newcommand{\fix}[1]{\todo[inline, color=yellow]{#1}}
+% Tables
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcommand{\adaptcell}[1]{\parbox{0.95\columnwidth}{\vspace{0.5em}#1\vspace{0.5em}}}
+% Math
+\newcommand{\rarrow}{$\rightarrow\ $}
+\newcommand{\larrow}{$\leftarrow\ $}
+\newcommand{\lif}{\rightarrow}
+\newcommand{\liff}{\leftrightarrow}
+\newcommand{\la}{\forall}
+\renewcommand{\le}{\exists}
+\newcommand{\lxor}{\dot\vee}
+\renewcommand{\ll}{\llbracket}
+\renewcommand{\phi}{\varphi}
+\newcommand{\rr}{\rrbracket}
+\newcommand{\lk}{\square}
+\newcommand{\lp}{\lozenge}
+\newcommand{\argmin}[1]{\underset{#1}{\mathrm{argmin}}}
+\newcommand{\argmax}[1]{\underset{#1}{\mathrm{argmax}}}
+\newcommand{\Sum}[1]{\underset{#1}{\sum}}
+
+% Others
+\newcommand{\newcolumn}{\vfill\pagebreak}
+\renewcommand{\b}[1]{\textbf{#1}}
+\renewcommand{\it}[1]{\textit{#1}}
+\renewcommand{\u}[1]{\underline{#1}}
+
+%%%%%%%%%%% STUFF TO PRINT SEMANTIC TABLEAUX %%%%%%%%%%
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows,calc, trees, automata}
+
+\tikzset{
+	modal/.style={>=stealth',shorten >=1pt,shorten <=1pt,auto,node distance=1.5cm,semithick},world/.style={circle,draw,minimum size=0.5cm,fill=gray!15},point/.style={circle,draw,inner sep=0.5mm,fill=black},reflexive above/.style={->,loop,looseness=7,in=120,out=60},reflexive below/.style={->,loop,looseness=7,in=240,out=300},reflexive left/.style={->,loop,looseness=7,in=150,out=210},reflexive right/.style={->,loop,looseness=7,in=30,out=330},none/.style={}
+}
+
+\forestset{%
+	declare toks={T}{},
+	declare toks={F}{},
+	my label/.style={%
+		tikz+={%
+			\path[late options={%
+				name=\forestoption{name},label={#1}}
+			];
+		}
+	},
+	tableaux/.style={%
+		forked edges,
+		for tree={
+			math content,
+			parent anchor=children,
+			child anchor=parent,
+		},
+		where level=0{%
+			for children={no edge},
+			phantom,
+		}{%
+			before typesetting nodes={%
+				content/.wrap value={\circ},
+			},
+			delay={%
+				my label/.wrap pgfmath arg={{[inner sep=0pt, xshift=-3.5pt, yshift=3.5pt, anchor=north west, font=\scriptsize]-45:$##1$}}{content()},
+				insert before/.wrap pgfmath arg={%
+					[{##1}, no edge, math content, before drawing tree={x'+=7.5pt}]
+				}{T()},
+				insert after/.wrap pgfmath arg={%
+					[{##1}, no edge, math content, before drawing tree={x'-=7.5pt}]
+				}{F()},
+			},
+			if={n_children("!u")==1}{%
+				before packing={calign with current edge},
+			}{}
+		},
+	}
+}
+
+\forestset{
+  smullyan tableaux/.style={
+    for tree={
+      math content
+    },
+    where n children=1{
+      !1.before computing xy={l=\baselineskip},
+      !1.no edge
+    }{},
+    closed/.style={
+      label=below:$\times$
+    },
+  },
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{ref.bib}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\title{ \Huge \textbf{A Blueprint For Transparifying The Future of Iran} \\[0.5cm]}
+
+\author{
+\begin{tabular}{ll}
+osIran Community
+\end{tabular} \bigskip \\
+
+\textit{Open Source Iran} \\
+\textit{Open Science Iran}\\
+\textit{osIran}\\
+
+}
+\date{January 2023}
+\addbibresource{ref.bib}
+
+
+\begin{document}
+
+\maketitle
+
+
+
+%\tableofcontents
+% \note{TODO: social impact}
+
+\section{Abstract}
+
+In this work we explore what could help the Women.Life.Freedom movement and people of Iran to transparify and create a better future.
+ We investigate major challenges the movement faces, break them down into research questions, and propose solutions and further scientific research.
+ % In this work we explore the feasibility and design of a representative system for the people 
+% of Iran living inside of the country by Iranian diaspora. We investigate and propose solutions and 
+% further scientific 
+% research of the
+%  several key factors in the formation of 
+% such a coalition, including the ideal size, objectives, core principles, membership, selection process,
+%  decision-making methods, and operational strategies.
+% We dissect the problem of creating a coalition into the following research questions.
+This is an open source open science work and anybody can contribute through the Github\footnote{https://github.com/osAIran/os-blueprint-transparifying-future-iran} repository.
+
+% This version was released on January 4, 2023, 10.11 PM CET.
+
+\section{Problem Statement}
+The Women.Life.Freedom movement and people of Iran are facing a lot of challenges in their efforts to create a better future. 
+The major challenges the movement faces are:
+\subsubsection{Uncertainty about the future}
+Not knowing what will happen is frightening. 
+People are afraid of rise of another totalitarian regime in Iran, similar to what happened in other failed revolutions such as Egypt.
+Moreover civil war like the one in Syria is also a frightening possibility.
+
+\subsubsection{Lack of knowledge and education}
+Knowledge and education are the most important factors in a democracy and creation of a better future.
+People in Iran are still not educated in what they need know to defend themselves against an oppressive force.
+Nika Shahkarami died because of lack of knowledge and education. If she was educated that 
+the regime tracks people's location through their phones, she might have been alive today.
+People still do not have any resources to learn how to defend against physical and mental abuse and mind games of the regime. 
+
+
+\subsubsection{Lack of an opposition/coalition}
+Another stagnating factor is the lack of an opposition/coalition. An opposition/coalition is a group of people who are united in their efforts to create a better future for Iran.
+
+\section{Background Information}
+
+
+\subsection{Open Source}
+
+
+\subsection{Open Science}
+Open science is the movement to make scientific research and its dissemination accessible to all levels of society, amateur or professional. Open science is transparent and accessible knowledge that is shared and developed through collaborative networks.
+
+
+\subsection{Open Source Open Science}
+
+
+\subsection{Democracy}
+
+
+\subsection{Deliberative Democracy}
+Deliberative democracy means that political decisions should be the product of fair and reasonable discussion and debate among citizens. In deliberative democracy, citizens exchange arguments and consider different claims that are designed to secure the public good. The decision-making process of this assembly must be democratic and deliberative to find the best solution. 
+\subsection{Deliberative/Partipatory Digital Democracy}
+
+\subsection{Digital Transparency}
+
+\subsection{Open Governace} 
+
+
+\section{Research Questions}
+
+\subsection{How could we minimize the uncertainties about the future?}
+
+With the help of open source open science, we can create plan for the future of Iran.
+Open science case studies of the world in all aspects of governance can be conducted to create solid plans for the future of Iran before the Islamic Republic is overthrown.
+This blueprint itself is an example of open source open science, where the people of Iran can contribute to the plan.
+With the help of solid plans for the future, we can minimize the uncertainties about the future.
+
+\subsection{Could we create a leaderless opposition?}
+Educating the public and solid plans for the future,
+open governance, transparency and digital democracy can reduce
+uncertainties, open up people’s imagination, and give birth to a
+leaderless opposition.
+
+\subsection{How could we facilitate giving birth to a coalition?}
+
+We break down the problem of creating a coalition into the following research questions.
+
+
+\section{Blueprint for a coalition}
+\subsection{How many members should the coalition have?}
+This coalition should represent the people of Iran; therefore small numbers such as 7 would only represent some of the people of Iran. 
+It is essential that the representatives of Kurds, Balouch, Azari, and all the ethnicities of Iran are present in this coalition. This coalition can become an assembly/council of hundreds to represent majority of the people of Iran. 
+
+\subsection{What are the objectives of the assembly?}
+This assembly should represent the people of Iran to the world, and plan ahead for the future of Iran.
+Open science case studies of the world in all aspects of governance can be conducted to create solid plans for the future of Iran before the Islamic Republic is overthrown.
+A ready plan for the future would clear the uncertainties about what will happen in the future and help the people of Iran in their efforts for governmental change and a better path toward the future.
+
+\subsection{What are the core principles of the assembly?}
+In this section, we propose three principles:
+% Core principles are the principles that every member should accept to be in the assembly. 
+\subsubsection{Openness and Transparency}
+Openness and Transparency would provide validity and trustability to the assembly. All the operations of this assembly, therefore, shall be digitally transparent. The members communicate through the internet and the data is publicly available and any form of communication in person or online is live-streamed. All the finance in this assembly is digitally transparent and all the software is open source.
+
+\subsubsection{Deliberative Democracy}
+Deliberate democracy does not need a leader and the assembly can be a heterarchy. 
+
+\subsubsection{Only open scientific plans can be selected for the future of Iran}
+Only open source open science peer-reviewed plans that are result of research can be implemented in the future. 
+Open source science means that the progress of the work, and all its digital artifacts are presented to the public.
+This opens up collaboration with anyone in the world. Including the people of Iran inside the country.
+% Open source science means that the process of research and all its intermediary and final artifacts are presented to the public. 
+% Open source science allowes open collaboration with any researcher in the world, and makes it possible for anyone to find errors and propose changes to the work. 
+% This makes open science peer review not a one-way street, but a two-way communication between the researchers and peers with discourse and a chance for anyone to become a contributor. 
+% Open scinece also indicates that the plans are presented in a way that is understandable for the public. 
+With open source science, people inside Iran can submit their plans, raise their questions and concerns about any plans and the researchers can answer them.
+% With open science, people inside and outside of Iran can contribute to the plans for the future of Iran. Iranian people inside the country can contribute annonymously as the identity of the contributors does not matter, and what matters is the quality of the research and involvement of people inside Iran.
+
+
+
+\subsection{Who are the members of the assembly?}
+This assembly should have representatives of all ethnicities and minorities in Iran and include the best candidates for creating the plans.
+ Therefore the main body of this assembly can be formed by activities, scientists, engineers, and artists.
+  Groups of experts can be formed by these members for each governmental aspect and research into 
+  banking/financial infrastructure, utilities infrastructure (water, electricity, gas), communications infrastructure (television, internet, radio), policing, 
+  national military, public health, rule of law, environmental sustainability, transitional government,
+   transitional justice, democratic elections, education, economy \& commerce.
+There can be a team of at least 5 to 10 experts and researchers in specific fields to research proposing the plans.
+
+\subsection{What is the selection process for the members of the assembly?}
+This selection process first and foremost must be transparent. Anyone that accepts the core principles can apply to be on the council by submitting a
+ resume, proposal, livestream interviews with Iranians and open QA; this data is available to the public. Representatives of the organization can only be considered if the organization complies with the transparency and openness protocol of the assembly. 
+ The selection process and interviews of the candidates are live-streamed. The members are selected from the candidates based on representativeness and meritocracy for conducting case studies of the world. 
+ The data is analyzed by multiple NGOs and reports are submited online. 
+ Moreover, we can officially ask Iranian diaspora to vote, and use forward voting to forward the votes of their relatives and friends inside Iran with a secure protocol.
+ Furthermore, we can analyse social media to gain insights how people in Iran think.
+ With statistcal analysis of all the above data, and a valid hyphothesis with a good confidence interval, the members can get legitimacy in representativeness.
+% \listoffigures
+% \listoftables
+\subsection{What is the selection process for plans?}
+Any open science peer-reviewed research proposal can be submitted by anyone to be considered for the future of Iran. In the case of multiple plans for a specific subject, deliberations are used to find the best possible plan for Iran and the process continues until a rough consensus is formed.
+
+\subsection{How do invlove the people inside Iran to participate in the assembly?}
+Digital tools can be implemented for remote secure participation. Analyzing the data of how people think in social media can also be used to find what the people of Iran want. Scientific analysis can be done by a third parties to ensure transparency and openness.
+
+
+
+\subsection{What do Iranian people want?}
+To answer this question, we must look at the past and research into what they are asking. With a possible secure internet channel and social democracy platform, data can be gathered to be analyzed and answer this question.
+
+
+\subsection{What is the decision-making process?}
+
+
+\subsection{What are the operational strategies?}
+
+\subsection{Can we make an assembly of thousand with participatory deliberate digital democracy platforms?}
+
+
+
+
+\section{Future work}
+Future work includes answering the open research questions, and writing a scientific peer-reviewd blueprint.
+
+\clearpage
+\newpage
+
+
+\printbibliography
+
+
+% \input{7-appendix}
+\end{document}
