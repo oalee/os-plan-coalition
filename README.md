@@ -1,6 +1,6 @@
-## Open Science Research - Assembly of Iran in Diaspora - A Coalition
+## Open Science Research - Transparifying the future
 
-This is a open science ongoing project for creation of a coalition representative system for people of Iran in diaspora. The project is in its early stage and is open to contributions from all people of Iran inside and outside Iran. 
+This is a open source open science ongoing project for transparifying the future.
 
 ## Research Plan Proposal
 
