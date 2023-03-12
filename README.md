@@ -5,7 +5,7 @@ This is a open science research project for creation of a coalition representati
 
 ## Research Plan Proposal
 
-To see the latest version, please click [here](https://github.com/ososIran/os-plan-coalition/raw/main/eng/os-assembly.pdf).
+To see the latest version, please click [here](https://github.com/oalee/os-plan-coalition/raw/main/eng/os-assebmly.pdf).
 
 
 
